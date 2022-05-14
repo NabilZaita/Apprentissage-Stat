@@ -15,7 +15,7 @@ EstimNaif=function(x,Data,h){
 ```
 ### 2. Simulation de données
 ```
-SimulData=function(Nobs=100,Npt=2){
+SimulData1=function(Nobs=100,Npt=2){
   #simulation de Xi
   X=matrix(0,ncol=Npt,nrow=Nobs)
   for (i in 1:Npt){
@@ -29,12 +29,37 @@ SimulData=function(Nobs=100,Npt=2){
   cbind(X,label)
 }
 ```
+```
+SimulData2=function(Nobs,mx=c(-5,0,5),my=c(-7,7),sd=1)
+	{
+  #taille du premier echantillon
+	N1=rbinom(1,Nobs,0.5)
+	#taille du deuxieme echantillon
+	N2=Nobs-N1
+	i1=sample(1:length(mx),Nobs,replace=TRUE)
+	j1=sample(1:length(my),Nobs,replace=TRUE)
+	Data=cbind(rnorm(Nobs,mx[i1],sd),rnorm(Nobs,my[j1],sd)) #Simulation de X
+	Y1=rep(0,N1)
+	Y2=rep(1,N2)
+	label=c(Y1,Y2) #simulation du label
+  return(cbind(Data,label))
+}
+```
 ### 3. Plot de la classification obtenue
 ```
-DataSimul=SimulData()
+DataSimul1=SimulData1()
 
-plot(DataSimul[,1],DataSimul[,2],col=c("red","blue","green"),xlab="X1", 
-     ylab="X2",main="Repartition des labels selon les donnees")
+plot(DataSimul1[,1],DataSimul1[,2],col=c("red","blue","green"),xlab="X1", 
+     ylab="X2",main="Repartition des labels selon les donnees 1")
+legend("bottomleft",title="Valeur du label", legend = c("0","1","2"),
+       fill=c("red","blue","green"))
+```
+![Plot de la classification obtenue](https://raw.githubusercontent.com/NabilZaita/Apprentissage-Stat/main/img1.png)
+```
+DataSimul2=SimulData2()
+
+plot(DataSimul2[,1],DataSimul2[,2],col=c("red","blue","green"),xlab="X1", 
+     ylab="X2",main="Repartition des labels selon les donnees 2")
 legend("bottomleft",title="Valeur du label", legend = c("0","1","2"),
        fill=c("red","blue","green"))
 ```
